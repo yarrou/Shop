@@ -7,8 +7,8 @@ import java.util.concurrent.Callable;
 
 public class App {
     private final String url = System.getenv("PG_CONN_STRING");
-    private final String user = "postgres";
-    private final String password = "nomorebugs";
+    private final String user = System.getenv("PG_USR");
+    private final String password = System.getenv("PG_PSSWRD");
 
     public Connection connect() {
         Connection conn = null;
