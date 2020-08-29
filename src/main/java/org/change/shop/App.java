@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.concurrent.Callable;
 
 public class App {
-    private final String url = "jdbc:postgresql://database-1.chstl11a7qwq.eu-west-1.rds.amazonaws.com:5432/shop";
+    private final String url = System.getenv("PG_CONN_STRING");
     private final String user = "postgres";
     private final String password = "nomorebugs";
 
