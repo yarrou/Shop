@@ -1,8 +1,6 @@
 package org.change.shop;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.concurrent.Callable;
 
 public class App {
@@ -21,8 +19,17 @@ public class App {
         return conn;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         App app = new App();
-        app.connect();
+
+        Statement st = app.connect().createStatement();
+        ResultSet rs = st.executeQuery("SELECT id,name,age,city FROM customers ");
+        while (rs.next())
+        {
+            System.out.print("request completed ");
+            System.out.println(rs.getInt("id")+" : " +rs.getString("name")+ " : "+rs.getInt("age")+" : "+ rs.getString("city"));
+        }
+        rs.close();
+        st.close();
     }
 }
