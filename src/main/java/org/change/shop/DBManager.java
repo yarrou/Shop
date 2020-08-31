@@ -22,4 +22,8 @@ public class DBManager {
             System.out.println(e.getMessage());
         }
     }
+
+    public Connection getConn() {
+        return conn;
+    }
 }
