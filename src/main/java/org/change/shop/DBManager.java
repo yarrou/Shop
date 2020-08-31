@@ -1,8 +1,8 @@
 package org.change.shop;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import org.change.shop.PlainOldJavaObjects.Customer;
+
+import java.sql.*;
 
 public class DBManager {
     private Connection conn;
@@ -25,5 +25,13 @@ public class DBManager {
 
     public Connection getConn() {
         return conn;
+    }
+    public Customer getCustomer(int id) throws SQLException {
+        PreparedStatement preparedStatement = conn.prepareStatement("select * from customers where id = ?");
+        preparedStatement.setInt(1,id);
+        ResultSet resultSet = preparedStatement.getResultSet();
+        Customer customer = new Customer(resultSet.getInt(1),resultSet.getString(2),
+                resultSet.getString(3),resultSet.getString(4),resultSet.getInt(5));
+        return customer;
     }
 }
