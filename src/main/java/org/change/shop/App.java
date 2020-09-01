@@ -1,7 +1,8 @@
 package org.change.shop;
 
+import org.change.shop.database.DBManager;
+
 import java.sql.*;
-import java.util.concurrent.Callable;
 
 public class App {
     private final String url = System.getenv("PG_CONN_STRING");

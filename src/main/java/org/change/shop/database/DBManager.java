@@ -1,6 +1,6 @@
-package org.change.shop;
+package org.change.shop.database;
 
-import org.change.shop.PlainOldJavaObjects.Customer;
+import org.change.shop.database.models.Customer;
 
 import java.sql.*;
 
