@@ -8,6 +8,13 @@ public class Purchase {
     private int product_id;
     private Date date;
 
+    public Purchase(int id, int customer_id, int product_id, Date date) {
+        this.id = id;
+        this.customer_id = customer_id;
+        this.product_id = product_id;
+        this.date = date;
+    }
+
     public int getId() {
         return id;
     }

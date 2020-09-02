@@ -12,10 +12,13 @@ public class DBManagerTest {
     DBManager dbManager ;
 
     @org.junit.jupiter.api.Test
+    @Before
+    public void setUp(){
+        dbManager = new DBManager(System.getenv("PG_CONN_STRING"),System.getenv("PG_USR"),System.getenv("PG_PSSWRD"));
+    }
     @Test
     public void getCustomerTest() throws SQLException {
         int testId = 3;
-        dbManager = new DBManager(System.getenv("PG_CONN_STRING"),System.getenv("PG_USR"),System.getenv("PG_PSSWRD"));
         Customer customer=dbManager.getCustomer(testId);
         Assert.assertEquals(testId,customer.getId());
     }
