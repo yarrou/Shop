@@ -1,4 +1,4 @@
-package org.change.shop.PlainOldJavaObjects;
+package org.change.shop.database.models;
 
 import java.util.Date;
 
@@ -7,6 +7,13 @@ public class Purchase {
     private int customer_id;
     private int product_id;
     private Date date;
+
+    public Purchase(int id, int customer_id, int product_id, Date date) {
+        this.id = id;
+        this.customer_id = customer_id;
+        this.product_id = product_id;
+        this.date = date;
+    }
 
     public int getId() {
         return id;

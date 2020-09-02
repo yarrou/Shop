@@ -1,4 +1,4 @@
-package org.change.shop.PlainOldJavaObjects;
+package org.change.shop.database.models;
 
 public class Product {
     private int id;
