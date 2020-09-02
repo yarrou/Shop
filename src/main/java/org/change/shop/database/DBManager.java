@@ -47,4 +47,11 @@ public class DBManager {
                 resultSet.getString(3),resultSet.getString(4),resultSet.getInt(5),list);
         return customer;
     }
+    public void deleteCustomer(int id) throws SQLException {
+        PreparedStatement preparedStatement = conn.prepareStatement("delete from customers where id = ?");
+        preparedStatement.setInt(1,id);
+        preparedStatement.executeUpdate();
+
+
+    }
 }
