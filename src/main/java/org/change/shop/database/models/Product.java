@@ -6,6 +6,14 @@ public class Product {
     private int price;
     private String note;
 
+
+    public Product(int id, String name, int price, String note) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.note = note;
+    }
+
     public int getId() {
         return id;
     }

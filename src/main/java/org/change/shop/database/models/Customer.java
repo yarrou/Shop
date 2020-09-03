@@ -1,6 +1,8 @@
 package org.change.shop.database.models;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.Callable;
 
 public class Customer {
     private int id;
@@ -58,5 +60,24 @@ public class Customer {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+
+    public Customer() {
+        super();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) return true;
+        if(o == null || getClass() != o.getClass()) return false;
+        Customer customer = (Customer)o;
+        return id == customer.getId() && name.equals(customer.getName())&& email.equals(customer.getEmail()) &&
+                city.equals(customer.getCity()) && age == customer.getAge();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, email, city, age, purchaseList);
     }
 }

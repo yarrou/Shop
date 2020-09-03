@@ -6,9 +6,9 @@ public class Purchase {
     private int id;
     private int customer_id;
     private int product_id;
-    private Date date;
+    private String date;
 
-    public Purchase(int id, int customer_id, int product_id, Date date) {
+    public Purchase(int id, int customer_id, int product_id, String date) {
         this.id = id;
         this.customer_id = customer_id;
         this.product_id = product_id;
@@ -39,11 +39,13 @@ public class Purchase {
         this.product_id = product_id;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
+
+
 }
