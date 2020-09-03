@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import java.sql.SQLException;
 
-import static org.junit.jupiter.api.Assertions.*;
+
 public class DBManagerTest {
     DBManager dbManager ;
 

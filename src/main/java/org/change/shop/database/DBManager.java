@@ -25,9 +25,13 @@ public class DBManager {
         }
     }
 
+
     public Connection getConn() {
         return conn;
     }
+
+
+
     public Customer getCustomer(int id) throws SQLException {
         ArrayList<Purchase> list = new ArrayList<>();
         PreparedStatement ps = conn.prepareStatement("select * from purchases where customer_id = ?");
@@ -45,13 +49,28 @@ public class DBManager {
         resultSet.next();
         customer = new Customer(resultSet.getInt(1),resultSet.getString(2),
                 resultSet.getString(3),resultSet.getString(4),resultSet.getInt(5),list);
+        preparedStatement.close();
+        resultSet.close();
+        resultSetOfPurchases.close();
+        ps.close();
         return customer;
     }
+
+
+
     public void deleteCustomer(int id) throws SQLException {
         PreparedStatement preparedStatement = conn.prepareStatement("delete from customers where id = ?");
         preparedStatement.setInt(1,id);
         preparedStatement.executeUpdate();
+        preparedStatement.close();
+    }
 
 
+    public void saveCustomer(Customer customer){
+
+        Integer integer = id;
+        if((integer == null) ||(id == -1)) {
+            PreparedStatement preparedStatement = conn.prepareStatement("insert into customers values (default,")
+        }
     }
 }
