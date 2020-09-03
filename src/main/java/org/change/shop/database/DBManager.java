@@ -66,11 +66,13 @@ public class DBManager {
     }
 
 
-    public void saveCustomer(Customer customer){
+    public void saveCustomer(Customer customer) throws SQLException {
 
-        Integer integer = id;
-        if((integer == null) ||(id == -1)) {
-            PreparedStatement preparedStatement = conn.prepareStatement("insert into customers values (default,")
+        if(((Integer)customer.getId() == null) ||(customer.getId()== -1)) {
+            PreparedStatement preparedStatement = conn.prepareStatement(
+                    "insert into customers (name,email,city,age) values (?,?,?,?");
+            preparedStatement.setString(1,customer.getName());
+            preparedStatement.setString(2,customer.getEmail());
         }
     }
 }
