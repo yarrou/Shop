@@ -6,7 +6,25 @@ public class Product {
     private int price;
     private String note;
 
-    public int getId() {
+
+    public Product(int id, String name, int price, String note) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.note = note;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", note='" + note + '\'' +
+                '}';
+    }
+
+    public Integer getId() {
         return id;
     }
 

@@ -15,9 +15,7 @@ public class App {
     public static void main(String[] args) throws SQLException {
         App app = new App();
         DBManager manager = new DBManager(app.url,app.user,app.password);
-        //Connection con=manager.getConn();
-        Customer customer = manager.getCustomer(6);
-        System.out.println(customer.getId());
+        System.out.println(manager.getCustomer(6));
 
     }
 }

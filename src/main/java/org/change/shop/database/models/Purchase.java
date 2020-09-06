@@ -1,6 +1,7 @@
 package org.change.shop.database.models;
 
-import java.util.Date;
+import java.sql.Date;
+import java.util.Objects;
 
 public class Purchase {
     private int id;
@@ -8,14 +9,40 @@ public class Purchase {
     private int product_id;
     private Date date;
 
-    public Purchase(int id, int customer_id, int product_id, Date date) {
+    public Purchase(int id, int customer_id, int product_id, java.sql.Date date) {
         this.id = id;
         this.customer_id = customer_id;
         this.product_id = product_id;
         this.date = date;
     }
 
-    public int getId() {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Purchase)) return false;
+        Purchase purchase = (Purchase) o;
+        return getId() == purchase.getId() &&
+                getCustomer_id() == purchase.getCustomer_id() &&
+                getProduct_id() == purchase.getProduct_id() &&
+                Objects.equals(getDate(), purchase.getDate());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getCustomer_id(), getProduct_id(), getDate());
+    }
+
+    @Override
+    public String toString() {
+        return "Purchase{" +
+                "id=" + id +
+                ", customer_id=" + customer_id +
+                ", product_id=" + product_id +
+                ", date=" + date +
+                '}';
+    }
+
+    public Integer getId() {
         return id;
     }
 
@@ -39,11 +66,12 @@ public class Purchase {
         this.product_id = product_id;
     }
 
-    public Date getDate() {
+    public java.sql.Date getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(java.sql.Date date) {
         this.date = date;
     }
+    
 }
