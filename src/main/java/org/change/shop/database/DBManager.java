@@ -82,7 +82,7 @@ public class DBManager {
     public void saveCustomer(Customer customer) throws SQLException {
         PreparedStatement preparedStatement = null;
         try {
-            if (((Integer) customer.getId() == null) || (customer.getId() == -1)) {
+            if ((customer.getId() == null) || (customer.getId() == -1)) {
                 preparedStatement = conn.prepareStatement(
                         "insert into customers (name,email,city,age) values (?,?,?,?)");
                 preparedStatement.setString(1, customer.getName());
@@ -120,7 +120,7 @@ public class DBManager {
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
             resultSet.next();
-            Purchase purchase = new Purchase(id, resultSet.getInt(1), resultSet.getInt(2), resultSet.getDate(3));
+            Purchase purchase = new Purchase(id, resultSet.getInt(2), resultSet.getInt(3), resultSet.getDate(4));
             return purchase;
         } finally {
             if (preparedStatement != null) preparedStatement.close();
@@ -143,7 +143,7 @@ public class DBManager {
     public void savePurchase(Purchase purchase) throws SQLException {
         PreparedStatement preparedStatement = null;
         try {
-            if (((Integer) purchase.getId() == null) || (purchase.getId() == -1)) {
+            if ((purchase.getId() == null) || (purchase.getId() == -1)) {
                 preparedStatement = conn.prepareStatement(
                         "insert into purchases (customer_id,product_id,date) values (?,?,?)");
                 preparedStatement.setInt(1, purchase.getCustomer_id());
@@ -195,7 +195,7 @@ public class DBManager {
     public void saveProduct(Product product) throws SQLException {
         PreparedStatement preparedStatement = null;
         try {
-            if (((Integer) product.getId() == null) || (product.getId() == -1)) {
+            if ((product.getId() == null) || (product.getId() == -1)) {
                 preparedStatement = conn.prepareStatement(
                         "insert into products (name,price,note) values (?,?,?)");
                 preparedStatement.setString(1, product.getName());

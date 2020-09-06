@@ -24,7 +24,7 @@ public class Product {
                 '}';
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

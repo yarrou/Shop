@@ -1,6 +1,7 @@
 package org.change.shop.database.models;
 
 import java.sql.Date;
+import java.util.Objects;
 
 public class Purchase {
     private int id;
@@ -16,6 +17,22 @@ public class Purchase {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Purchase)) return false;
+        Purchase purchase = (Purchase) o;
+        return getId() == purchase.getId() &&
+                getCustomer_id() == purchase.getCustomer_id() &&
+                getProduct_id() == purchase.getProduct_id() &&
+                Objects.equals(getDate(), purchase.getDate());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getCustomer_id(), getProduct_id(), getDate());
+    }
+
+    @Override
     public String toString() {
         return "Purchase{" +
                 "id=" + id +
@@ -25,7 +42,7 @@ public class Purchase {
                 '}';
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -56,8 +73,5 @@ public class Purchase {
     public void setDate(java.sql.Date date) {
         this.date = date;
     }
-
-    public void setDate(java.util.Date date1) {
-        this.date = new java.sql.Date(date1.getTime());
-    }
+    
 }

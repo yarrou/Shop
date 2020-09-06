@@ -74,6 +74,9 @@ public class DBManagerTest {
     @Test
     public void getPurchaseTest() throws SQLException {
         Purchase purchaseTest = dbManager.getPurchase(indexPurchase);
+        System.out.println(purchaseTest);
+        System.out.println(purchase);
+        System.out.println(purchaseTest.equals(purchase));
         Assert.assertEquals(purchaseTest, purchase);
 
     }
@@ -81,6 +84,7 @@ public class DBManagerTest {
     @org.junit.jupiter.api.Test
     public void getProductTest() throws SQLException {
         Product productTest = dbManager.getProduct(indexProduct);
+        System.out.println();
         Assert.assertEquals(product, productTest);
 
 

@@ -81,7 +81,7 @@ public class Customer {
     }
 
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
