@@ -14,7 +14,8 @@ public class App {
 
     public static void main(String[] args) throws SQLException {
         App app = new App();
-        //DBManager manager = new DBManager(app.url,app.user,app.password);
+        DBManager manager = new DBManager(app.url,app.user,app.password);
+        System.out.println(manager.getCustomer(6));
 
     }
 }

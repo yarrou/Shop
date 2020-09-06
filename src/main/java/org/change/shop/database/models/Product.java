@@ -14,6 +14,16 @@ public class Product {
         this.note = note;
     }
 
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", note='" + note + '\'' +
+                '}';
+    }
+
     public int getId() {
         return id;
     }

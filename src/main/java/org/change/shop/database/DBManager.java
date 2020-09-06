@@ -6,12 +6,14 @@ import org.change.shop.database.models.Purchase;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
 
 public class DBManager {
     private Connection conn;
-    private  String url;
+    private String url;
     private String user;
-    private  String password;
+    private String password;
     private int id;
 
     public DBManager(String url, String user, String password) {
@@ -33,38 +35,36 @@ public class DBManager {
     }
 
 
-
     public Customer getCustomer(int id) throws SQLException {
         ArrayList<Purchase> list = new ArrayList<>();
-
+        Customer customer = null;
         PreparedStatement ps = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
-            conn.prepareStatement("select * from purchases where customer_id = ?");
+            ps = conn.prepareStatement("select * from purchases where customer_id = ?");
             ps.setInt(1, id);
             ResultSet resultSetOfPurchases = ps.executeQuery();
             while (resultSetOfPurchases.next()) {
                 Purchase purchase = new Purchase(resultSetOfPurchases.getInt(1), resultSetOfPurchases.getInt(2),
-                        resultSetOfPurchases.getInt(3), resultSetOfPurchases.getString(4));
+                        resultSetOfPurchases.getInt(3), resultSetOfPurchases.getDate(4));
                 list.add(purchase);
             }
             preparedStatement = conn.prepareStatement("select * from customers where id = ?");
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
-            Customer customer = null;
             resultSet.next();
             customer = new Customer(resultSet.getInt(1), resultSet.getString(2),
-                    resultSet.getString(3), resultSet.getString(4), resultSet.getInt(5), list);
+                    resultSet.getString(3), resultSet.getString(4), resultSet.getInt(5));
+            if (list != null) customer.setPurchaseList(list);
+
+        } finally {
+            if (preparedStatement != null) preparedStatement.close();
+            if (ps != null) ps.close();
+            if (resultSet != null) resultSet.close();
             return customer;
         }
-        finally {
-            if(preparedStatement != null) preparedStatement.close();
-            if(ps != null) ps.close();
-            if(resultSet != null) resultSet.close();
-        }
     }
-
 
 
     public void deleteCustomer(Customer customer) throws SQLException {
@@ -73,8 +73,7 @@ public class DBManager {
             conn.prepareStatement("delete from customers where id = ?");
             preparedStatement.setInt(1, customer.getId());
             preparedStatement.executeUpdate();
-        }
-        finally {
+        } finally {
             if (preparedStatement != null) preparedStatement.close();
         }
     }
@@ -91,6 +90,14 @@ public class DBManager {
                 preparedStatement.setString(3, customer.getCity());
                 preparedStatement.setInt(4, customer.getAge());
                 preparedStatement.executeUpdate();
+                List<Purchase> list = customer.getPurchaseList();
+                if (list != null) {
+                    for (Purchase purchase : list) {
+                        savePurchase(purchase);
+                    }
+                }
+
+
             } else {
                 preparedStatement = conn.prepareStatement("update customers set name=?,email = ?,city = ?, age = ? where id = ?");
                 preparedStatement.setString(1, customer.getName());
@@ -100,43 +107,40 @@ public class DBManager {
                 preparedStatement.setInt(5, customer.getId());
                 preparedStatement.executeUpdate();
             }
-        }
-        finally {
-            if(preparedStatement != null) preparedStatement.close();
+        } finally {
+            if (preparedStatement != null) preparedStatement.close();
         }
     }
 
     public Purchase getPurchase(int id) throws SQLException {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        try{
-            conn.prepareStatement("select * from purchases where id = ?");
-        preparedStatement.setInt(1,id);
-        resultSet = preparedStatement.executeQuery();
-        resultSet.next();
-        Purchase purchase = new Purchase(id,resultSet.getInt(1),resultSet.getInt(2),resultSet.getString(3));
-        return  purchase;
-        }
-        finally {
-            if(preparedStatement != null) preparedStatement.close();
-            if(resultSet != null) resultSet.close();
+        try {
+            preparedStatement = conn.prepareStatement("select * from purchases where id = ?");
+            preparedStatement.setInt(1, id);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            Purchase purchase = new Purchase(id, resultSet.getInt(1), resultSet.getInt(2), resultSet.getDate(3));
+            return purchase;
+        } finally {
+            if (preparedStatement != null) preparedStatement.close();
+            if (resultSet != null) resultSet.close();
         }
     }
 
 
-    public void deletePurchase( Purchase purchase) throws SQLException {
+    public void deletePurchase(Purchase purchase) throws SQLException {
         PreparedStatement preparedStatement = null;
         try {
             conn.prepareStatement("delete from purchases where id = ?");
             preparedStatement.setInt(1, purchase.getId());
             preparedStatement.executeUpdate();
-        }
-        finally {
-            if(preparedStatement != null) preparedStatement.close();
+        } finally {
+            if (preparedStatement != null) preparedStatement.close();
         }
     }
 
-    public void savePurchase(Purchase purchase) throws SQLException{
+    public void savePurchase(Purchase purchase) throws SQLException {
         PreparedStatement preparedStatement = null;
         try {
             if (((Integer) purchase.getId() == null) || (purchase.getId() == -1)) {
@@ -144,23 +148,22 @@ public class DBManager {
                         "insert into purchases (customer_id,product_id,date) values (?,?,?)");
                 preparedStatement.setInt(1, purchase.getCustomer_id());
                 preparedStatement.setInt(2, purchase.getProduct_id());
-                preparedStatement.setString(3, purchase.getDate());
+                preparedStatement.setDate(3, purchase.getDate());
                 preparedStatement.executeUpdate();
             } else {
                 preparedStatement = conn.prepareStatement("update purchases set customer_id =?,product_id = ?,date = ? where id = ?");
                 preparedStatement.setInt(1, purchase.getCustomer_id());
                 preparedStatement.setInt(2, purchase.getProduct_id());
-                preparedStatement.setString(3, purchase.getDate());
+                preparedStatement.setDate(3, purchase.getDate());
                 preparedStatement.setInt(4, purchase.getId());
                 preparedStatement.executeUpdate();
             }
-        }
-        finally {
-            if(preparedStatement != null) preparedStatement.close();
+        } finally {
+            if (preparedStatement != null) preparedStatement.close();
         }
     }
 
-    public Product getProduct(int id) throws SQLException{
+    public Product getProduct(int id) throws SQLException {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
@@ -172,10 +175,9 @@ public class DBManager {
             preparedStatement.close();
             resultSet.close();
             return product;
-        }
-        finally {
-            if(preparedStatement != null) preparedStatement.close();
-            if(resultSet!= null) resultSet.close();
+        } finally {
+            if (preparedStatement != null) preparedStatement.close();
+            if (resultSet != null) resultSet.close();
         }
     }
 
@@ -185,14 +187,12 @@ public class DBManager {
             preparedStatement = conn.prepareStatement("delete from products where id = ?");
             preparedStatement.setInt(1, product.getId());
             preparedStatement.executeUpdate();
+        } finally {
+            if (preparedStatement != null) preparedStatement.close();
         }
-        finally {
-            if(preparedStatement != null) preparedStatement.close();
-        }
-        preparedStatement.close();
     }
 
-    public void saveProduct(Product product) throws SQLException{
+    public void saveProduct(Product product) throws SQLException {
         PreparedStatement preparedStatement = null;
         try {
             if (((Integer) product.getId() == null) || (product.getId() == -1)) {
@@ -210,9 +210,8 @@ public class DBManager {
                 preparedStatement.setInt(4, product.getId());
                 preparedStatement.executeUpdate();
             }
-        }
-        finally {
-            if(preparedStatement != null) preparedStatement.close();
+        } finally {
+            if (preparedStatement != null) preparedStatement.close();
         }
     }
 
