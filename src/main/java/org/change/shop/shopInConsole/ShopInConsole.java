@@ -168,6 +168,13 @@ public class ShopInConsole {
         } catch (SQLException e) {
             System.out.println("Не удалось выполнить запрос.");
             e.printStackTrace();
+        } finally {
+            try {
+                if (statement != null) statement.close();
+                if (resultSet != null) resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -184,6 +191,13 @@ public class ShopInConsole {
             }
         } catch (SQLException e) {
             System.out.println("Не удалось выполнить запрос.");
+        } finally {
+            try {
+                if (statement != null) statement.close();
+                if (resultSet != null) resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
