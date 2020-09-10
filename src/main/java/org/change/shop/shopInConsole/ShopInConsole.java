@@ -4,7 +4,6 @@ import org.change.shop.database.DBManager;
 import org.change.shop.database.models.Customer;
 import org.change.shop.database.models.Product;
 import org.change.shop.database.models.Purchase;
-import sun.security.pkcs.ParsingException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,10 +18,8 @@ public class ShopInConsole {
     public BufferedReader getReader() {
         if (reader == null) {
             reader = new BufferedReader(new InputStreamReader(System.in));
-            return reader;
-        } else {
-            return reader;
         }
+        return reader;
     }
 
     public void closeReader() {
@@ -133,83 +130,83 @@ public class ShopInConsole {
         ResultSet resultSet = null;
         try {
             int month = Integer.parseInt(getReader().readLine());
-            statement =  dbManager.getConn().prepareStatement("select c.city,count(p.*),sum(p2.price) from purchases p join customers c on c.id = p.customer_id join products p2 on p2.id = p.product_id where extract(month from p.date) = ? group by city");
-            statement.setInt(1,month);
+            statement = dbManager.getConn().prepareStatement("select c.city,count(p.*),sum(p2.price) from purchases p join customers c on c.id = p.customer_id join products p2 on p2.id = p.product_id where extract(month from p.date) = ? group by city");
+            statement.setInt(1, month);
             resultSet = statement.executeQuery();
             System.out.println("Город  |  Количество  |  Стоимость");
-            while (resultSet.next()){
-                System.out.println(resultSet.getString(1) + " , "+resultSet.getInt(2)+" , "+resultSet.getInt(3));
+            while (resultSet.next()) {
+                System.out.println(resultSet.getString(1) + " , " + resultSet.getInt(2) + " , " + resultSet.getInt(3));
             }
-        }
-        catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             System.out.println("Неправильный формат ввода месяца.");
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Error!");
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Не удалось выполнить запрос");
-        }
-        finally {
+        } finally {
             try {
-                if(resultSet != null) resultSet.close();
-                if(statement != null) statement.close();
-            }
-            catch (SQLException e){
+                if (resultSet != null) resultSet.close();
+                if (statement != null) statement.close();
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
 
     }
 
-    public void customerReport(){
+    public void customerReport() {
         System.out.println("Выбран отчет по покупателям.");
         Statement statement = null;
         ResultSet resultSet = null;
-        try{
+        try {
             statement = dbManager.getConn().createStatement();
             resultSet = statement.executeQuery("select c.name,c.email,sum(p2.price) from purchases p join customers c on p.customer_id = c.id join products p2 on p.product_id = p2.id group by c.name,c.email order by sum desc");
             System.out.println("Имя    |    Емейл   | Общий доход от покупателя");
-            while (resultSet.next()){
-                System.out.println(resultSet.getString(1)+" , "+ resultSet.getString(2 )+ " , " + resultSet.getInt(3));
+            while (resultSet.next()) {
+                System.out.println(resultSet.getString(1) + " , " + resultSet.getString(2) + " , " + resultSet.getInt(3));
             }
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Не удалось выполнить запрос.");
             e.printStackTrace();
         }
     }
 
-    public void buyerReview(){
+    public void buyerReview() {
         System.out.println("Выбран обзор покупателей.");
         Statement statement = null;
         ResultSet resultSet = null;
-        try{
+        try {
             statement = dbManager.getConn().createStatement();
             resultSet = statement.executeQuery("select * from customers");
             System.out.println("Id  |   Имя   |   Емейл   |   Город   | Возраст");
-            while (resultSet.next()){
-                System.out.println(resultSet.getInt(1)+" , "+resultSet.getString(2)+" , "+resultSet.getString(3)+" , "+resultSet.getString(4)+" , "+resultSet.getInt(5));
+            while (resultSet.next()) {
+                System.out.println(resultSet.getInt(1) + " , " + resultSet.getString(2) + " , " + resultSet.getString(3) + " , " + resultSet.getString(4) + " , " + resultSet.getInt(5));
             }
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Не удалось выполнить запрос.");
         }
     }
-    public void productReviev(){
+
+    public void productReviev() {
         System.out.println("Выбран обзор продуктов.");
         Statement statement = null;
         ResultSet resultSet = null;
-        try{
+        try {
             statement = dbManager.getConn().createStatement();
             resultSet = statement.executeQuery("select * from products");
             System.out.println("Id  |   Название   |   Стоимость   |   Примечане");
-            while (resultSet.next()){
-                System.out.println(resultSet.getInt(1)+" , "+resultSet.getString(2)+" , "+resultSet.getString(3)+" , "+resultSet.getString(4));
+            while (resultSet.next()) {
+                System.out.println(resultSet.getInt(1) + " , " + resultSet.getString(2) + " , " + resultSet.getString(3) + " , " + resultSet.getString(4));
             }
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Не удалось выполнить запрос.");
+        } finally {
+            try {
+                if (statement != null) statement.close();
+                if (resultSet != null) resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
