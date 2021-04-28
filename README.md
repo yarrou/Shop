@@ -1,3 +1,3 @@
 # Shop
-This is the main version of the project.
-
+Решение задач в рамках курса переобучения от ByChange
+Postgresql , JDBC 
